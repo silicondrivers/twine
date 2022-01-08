@@ -1,22 +1,18 @@
+/* SPDX-License-Identifier: GPL-2.0+ */
+/*
+ * tasks.c
+ *
+ * Tasks and task management routines.
+ *
+ * Copyright (C) 2022 Alex Pogostin <alex.pogostin@outlook.com>
+ *
+ */
+
 #include "twine.h"
 
-unsigned short *SP_current;
-
-unsigned short taskManager_stack_1;
-unsigned short taskManager_stack_2;
-unsigned short taskManager_stack_3;
-unsigned short taskManager_stack_4;
-
-unsigned short task_1_stack_size;
-unsigned short task_2_stack_size;
-unsigned short task_3_stack_size;
-unsigned short task_4_stack_size;
-
-unsigned short task_1_stack[8];
-unsigned short task_2_stack[8];
-unsigned short task_3_stack[8];
-unsigned short task_4_stack[8];
-
+/*****************************************************************************/
+/* Global declarations                                                       */
+/*****************************************************************************/
 unsigned short task_1_status = 0;
 unsigned short task_2_status = 0;
 unsigned short task_3_status = 0;
@@ -27,10 +23,28 @@ short task_2_timeout = 0;
 short task_3_timeout = 0;
 short task_4_timeout = 0;
 
-unsigned short task_current = 0;
+/*****************************************************************************/
+/* Static (local) declarations                                               */
+/*****************************************************************************/
+static unsigned short *SP_current;
+static unsigned short task_current = 0;
 
-/****************************************************************************/
+static unsigned short taskManager_stack_1;
+static unsigned short taskManager_stack_2;
+static unsigned short taskManager_stack_3;
+static unsigned short taskManager_stack_4;
 
+static unsigned short task_1_stack_size;
+static unsigned short task_2_stack_size;
+static unsigned short task_3_stack_size;
+static unsigned short task_4_stack_size;
+
+static unsigned short task_1_stack[8];
+static unsigned short task_2_stack[8];
+static unsigned short task_3_stack[8];
+static unsigned short task_4_stack[8];
+
+/*****************************************************************************/
 void taskManager(void)
 {
     short i;
@@ -147,8 +161,8 @@ void taskManager(void)
     } // while
 }
 
-/*****************************************************************************/
-void taskSleep(int count)
+/***************************************AJP***********************************/
+static void taskSleep(int count)
 {
     short i;
 
@@ -222,7 +236,8 @@ void taskSleep(int count)
 /*****************************************************************************/
 void taskTimeoutLock(short num, short count)
 {
-    _lock();
+    __disable_interrupt();
+
     switch(num)
     {
     case 1:
@@ -240,7 +255,8 @@ void taskTimeoutLock(short num, short count)
     default:
         break;
     }
-    _unlock();
+
+    __enable_interrupt();
 }
 
 /*****************************************************************************/

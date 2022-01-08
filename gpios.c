@@ -1,3 +1,13 @@
+/* SPDX-License-Identifier: GPL-2.0+ */
+/*
+ * gpios.c
+ *
+ * Gpio initialization.
+ *
+ * Copyright (C) 2022 Alex Pogostin <alex.pogostin@outlook.com>
+ *
+ */
+
 #include "twine.h"
 
 void initGpios(void)
